@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+
+    <RelativeLayout
+        android:id="@+id/front"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:elevation="2dp"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp"
+            app:cardMaxElevation="1dp"
+            app:cardPreventCornerOverlap="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/card"
+                    android:scaleType="centerCrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <ImageView
+                    android:id="@+id/delete"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_alignParentRight="true"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_delete_flashcard_24dp" />
+
+                <ImageView
+                    android:id="@+id/flip"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_flip_24dp" />
+
+                <ImageView
+                    android:id="@+id/editCard"
+                    android:src="@drawable/ic_add_edit_flashcard_24dp"
+                    android:padding="12dp"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp" />
+
+                <com.piapps.flashcard.view.AutoResizeTextView
+                    android:id="@+id/textFront"
+                    android:layout_marginTop="56dp"
+                    android:layout_marginBottom="56dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:textSize="32sp"
+                    android:text="Example flashcard"
+                    app:ettEmptyTexStyle="normal"
+                    app:ettEmptyText="Add text&#8230;"
+                    app:ettShowHint="false" />
+
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/back"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:elevation="2dp"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp"
+            app:cardMaxElevation="1dp"
+            app:cardPreventCornerOverlap="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/cardBack"
+                    android:scaleType="centerCrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <ImageView
+                    android:id="@+id/flipBack"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_flip_24dp" />
+
+                <ImageView
+                    android:id="@+id/editCardBack"
+                    android:src="@drawable/ic_add_edit_flashcard_24dp"
+                    android:padding="12dp"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp" />
+
+                <com.piapps.flashcard.view.AutoResizeTextView
+                    android:id="@+id/textBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="56dp"
+                    android:layout_marginBottom="56dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:textSize="32sp"
+                    android:padding="16dp"
+                    android:text="Example flashcard"
+                    android:gravity="center"
+                    app:ettEmptyTexStyle="normal"
+                    app:ettEmptyText="Add text&#8230;"
+                    app:ettShowHint="false" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
+</RelativeLayout>

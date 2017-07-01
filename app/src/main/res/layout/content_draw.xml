@@ -1,0 +1,11 @@
+<com.rm.freedrawview.FreeDrawView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/draw_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_white_1000"
+    app:paintAlpha="255"
+    app:paintColor="@color/md_black_1000"
+    app:paintWidth="4dp"
+    app:resizeBehaviour="crop"></com.rm.freedrawview.FreeDrawView>

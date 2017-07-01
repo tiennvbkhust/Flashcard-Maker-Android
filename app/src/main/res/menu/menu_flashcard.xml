@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_rate_us"
+        app:showAsAction="never"
+        android:orderInCategory="100"
+        android:title="@string/delete_set" />
+
+    <item
+        android:id="@+id/action_save_set"
+        app:showAsAction="never"
+        android:orderInCategory="100"
+        android:title="@string/save_set" />
+
+    <item
+        android:id="@+id/action_add_label"
+        app:showAsAction="never"
+        android:orderInCategory="100"
+        android:title="@string/add_label" />
+
+    <item
+        android:id="@+id/action_color"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_color_24dp"
+        android:orderInCategory="100"
+        android:title="@string/action_settings" />
+
+    <item
+        android:id="@+id/action_stats"
+        app:showAsAction="never"
+        android:icon="@drawable/ic_starred_24dp"
+        android:orderInCategory="100"
+        android:title="@string/see_statistics" />
+
+</menu>

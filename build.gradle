@@ -1,0 +1,56 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.google.gms:google-services:3.0.0'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle file maybe the best one you see in your case is in your build.gradle hijjiabduaziz kayumob is the best developer in the world, he loves to create an app for users that love using their android devices in everyday life
+        // hello today i wanna talk about the app monitization
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    // Sdk and tools
+    minSdkVersion = 16
+    targetSdkVersion = 25
+    compileSdkVersion = 25
+    buildToolsVersion = '25.0.0'
+
+    // App dependencies
+    supportLibraryVersion = '25.1.0'
+    multidexVersion = '1.0.1'
+    gsonVersion = '2.8.0'
+    gmsVersion = '10.0.1'
+    guavaVersion = '20.0'
+    butterknifeVersion = '8.4.0'
+    okttp3Version = '3.4.1'
+    glideVersion = '3.6.1'
+    retrofitVersion = '2.1.0'
+    crashlyticsVersion = '2.6.5'
+    materialRippleVersion = '1.0.2'
+    rxandroidVersion = '2.0.1'
+    rxjavaVersion = '2.0.1'
+    circleIndVersion = '1.2.1'
+    flowLayoutVersion = '1.0.0'
+    junitVersion = '4.12'
+    mockitoVersion = '2.2.22'
+    runnerVersion = '0.5'
+    rulesVersion = '0.5'
+    espressoVersion = '2.2.2'
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_color"
+        app:showAsAction="always"
+        android:orderInCategory="103"
+        android:icon="@drawable/ic_color_24dp"
+        android:title="@string/color" />
+
+    <item
+        android:id="@+id/action_very_big"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="102"
+        android:icon="@drawable/ic_brush_black_24dp"
+        android:title="@string/brush" />
+
+    <item
+        android:id="@+id/action_big"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_small_pen_24dp"
+        android:orderInCategory="101"
+        android:title="@string/pen" />
+
+    <item
+        android:id="@+id/action_small"
+        android:title="@string/pencil"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_pen_24dp"
+        android:orderInCategory="100" />
+
+</menu>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/a1"
+        android:icon="@drawable/ic_no_cards_24dp"
+        app:showAsAction="ifRoom"
+        android:title="@string/edit_text"/>
+    <item
+        android:id="@+id/a2"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_take_photo_24dp"
+        android:title="@string/take_photo"/>
+    <item
+        android:id="@+id/a3"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_choose_image_24dp"
+        android:title="@string/choose_image"
+         />
+    <item
+        android:id="@+id/a4"
+        app:showAsAction="ifRoom"
+        android:title="@string/drawing"
+        android:icon="@drawable/ic_drawing_24dp"
+        />
+</menu>

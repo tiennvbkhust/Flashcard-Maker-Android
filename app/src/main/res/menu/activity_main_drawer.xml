@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="@string/app_name">
+        <menu>
+
+            <item
+                android:checkable="true"
+                android:id="@+id/nav_all_sets"
+                android:icon="@drawable/ic_all_sets_24dp"
+                android:title="All sets" />
+            <item
+                android:checkable="true"
+                android:id="@+id/nav_starred"
+                android:icon="@drawable/ic_starred_24dp"
+                android:title="@string/menu_most_used" />
+        </menu>
+    </item>
+
+    <item
+        android:checkable="true"
+        android:title="@string/menu_labels">
+        <menu>
+            <item
+                android:checkable="true"
+                android:id="@+id/nav_important"
+                android:icon="@drawable/ic_important_24dp"
+                android:title="@string/menu_important" />
+            <item
+                android:checkable="true"
+                android:id="@+id/nav_todo"
+                android:icon="@drawable/ic_todo_24dp"
+                android:title="@string/menu_todo" />
+            <item
+                android:checkable="true"
+                android:id="@+id/nav_dictionary"
+                android:icon="@drawable/ic_dictionary_24dp"
+                android:title="@string/menu_dictionary" />
+            <item
+                android:checkable="true"
+                android:id="@+id/nav_create_new_label"
+                android:icon="@drawable/ic_create_new_label_24dp"
+                android:title="@string/menu_create_label" />
+        </menu>
+    </item>
+
+    <item
+        android:checkable="true"
+        android:id="@+id/nav_help"
+        android:icon="@drawable/ic_help_black_24dp"
+        android:title="@string/menu_help" />
+
+    <item
+        android:checkable="true"
+        android:id="@+id/nav_about"
+        android:icon="@drawable/ic_about_24dp"
+        android:title="@string/menu_about" />
+
+
+</menu>
