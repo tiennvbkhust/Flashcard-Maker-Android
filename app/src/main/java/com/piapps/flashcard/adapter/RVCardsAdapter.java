@@ -40,7 +40,6 @@ import static com.piapps.flashcard.activity.FlashcardActivity.TAKE_PHOTO_CODE;
 
 public class RVCardsAdapter extends RecyclerView.Adapter<RVCardsAdapter.ViewHolder> {
     private static final String ENTER_FRONT_DIALOG = "enter_front_dialog";
-    String TAG = "ADAPTER";
     List<Card> list;
 
     public RVCardsAdapter(List<Card> list) {
