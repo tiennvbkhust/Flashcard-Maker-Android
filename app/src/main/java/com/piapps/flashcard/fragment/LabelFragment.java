@@ -28,11 +28,12 @@ import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
  * Created by abduaziz on 2/14/17.
  */
 
-public class DictionaryFragment extends Fragment{
+public class LabelFragment extends Fragment {
 
     private static final String TAG = "FLASH";
     private static final String KEY_HEADER_POSITIONING = "key_header_mode";
     private static final String KEY_MARGINS_FIXED = "key_margins_fixed";
+    public static LabelFragment instance;
     @BindView(R.id.recycler_view)
     RecyclerListView rv;
     FlashcardDb db;
@@ -41,11 +42,20 @@ public class DictionaryFragment extends Fragment{
     private int mHeaderDisplay;
     private boolean mAreMarginsFixed;
 
+    public static LabelFragment newInstance(String label) {
+        LabelFragment labelFragment = new LabelFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("title", label);
+        labelFragment.setArguments(bundle);
+        return labelFragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_important, container, false);
         ButterKnife.bind(this, root);
+
         return root;
     }
 
@@ -70,13 +80,15 @@ public class DictionaryFragment extends Fragment{
         Log.d(TAG, "onViewCreated: flashcards.size() = " + flashcards.size());
         rv.setLayoutManager(new LayoutManager(getActivity()));
         //OverScrollDecoratorHelper.setUpOverScroll(rv, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
-        adapter = new RVMainAdapter(getActivity(), mHeaderDisplay, Utils.getFlashcardsByLabel(flashcards, getString(R.string.menu_dictionary)));
+        adapter = new RVMainAdapter(getActivity(), mHeaderDisplay, Utils.getFlashcardsByLabel(flashcards, getString(R.string.menu_todo)));
         adapter.setMarginsFixed(mAreMarginsFixed);
         adapter.setHeaderDisplay(mHeaderDisplay);
         rv.setAdapter(new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(adapter)));
 
-        LinearLayout noSets = (LinearLayout)view.findViewById(R.id.no_sets);
-        if (Utils.getFlashcardsByLabel(flashcards, getString(R.string.menu_dictionary)).isEmpty())
+        String label = getArguments().getString("title", "aksjdhiqwhe27813487132647813");
+
+        LinearLayout noSets = (LinearLayout) view.findViewById(R.id.no_sets);
+        if (Utils.getFlashcardsByLabel(flashcards, label).isEmpty())
             noSets.setVisibility(View.VISIBLE);
         else
             noSets.setVisibility(View.GONE);

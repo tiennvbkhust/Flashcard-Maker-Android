@@ -65,7 +65,7 @@ public class ImportantFragment extends Fragment{
             mAreMarginsFixed = getResources().getBoolean(R.bool.default_margins_fixed);
         }
 
-        db = new FlashcardDb(getContext());
+        db = FlashcardDb.getInstance(getActivity().getApplicationContext());
         flashcards = db.getAllFlashcards();
         Log.d(TAG, "onViewCreated: flashcards.size() = " + flashcards.size());
         rv.setLayoutManager(new LayoutManager(getActivity()));

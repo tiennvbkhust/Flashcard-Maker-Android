@@ -1,4 +1,8 @@
 <resources>
+
+
+    <string name="APP_KEY">p6t8mdrqksbj4d0</string>
+
     <string name="app_name">Flashcards</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -14,7 +18,6 @@
     <string name="menu_dictionary">Dictionary</string>
     <string name="menu_create_label">Create new label</string>
 
-    <string name="menu_archive">Archive</string>
     <string name="menu_trash">Trash</string>
 
     <string name="menu_about">About</string>
@@ -31,12 +34,18 @@
     <string name="hint_enter_set_name">example: Korean Vocabulary</string>
 
     <string name="edit_set_name">Edit set name</string>
-    <string name="delete_set">Delete set</string>
+    <string name="delete_set">Move to Trash</string>
     <string name="save_set">Save and go back</string>
+    <string name="reverse_set">Reverse cards</string>
     <string name="set_saved">Set saved</string>
-    <string name="set_deleted">Set deleted</string>
+    <string name="set_archived">Set moved to Trash</string>
     <string name="add_label">Add label</string>
     <string name="title_activity_edit_flashcard_dialog">EditFlashcardDialog</string>
+
+    <string name="back_up_restore">Backup and restore</string>
+    <string name="sign_in">Sign up with Dropbox</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
 
     <string name="take_photo">Take photo</string>
     <string name="choose_image">Choose image</string>
@@ -79,8 +88,9 @@
     <string name="could_not_load_image">Could not load image from storage, please, check your storage empty space!</string>
 
     <string name="no_sets">Once you create a new set, you\'ll see it listed here</string>
+    <string name="no_sets_trash">Once you delete a set, you\'ll see it listed here</string>
     <string name="no_cards">Once you create a new flashcard, you\'ll see it listed here</string>
-    <string name="empty_set">This set is empty, try adding some cards</string>
+    <string name="empty_set">This set is empty, try to add some cards</string>
 
     <string name="example_card_front">Example front side of a flashcard, you can add text, image or drawing</string>
     <string name="example_card_back">Example back side of a flashcard, you can add text, image or drawing</string>
@@ -112,5 +122,11 @@
     <string name="study_flashcards_desc">Study your flashcards anytime! Shake your phone to shuffle cards, or simply slide right/left</string>
     <string name="title_activity_statistics">StatisticsActivity</string>
     <string name="title_activity_study">StudyActivity</string>
+
+
+    <string name="put_back">Put back</string>
+    <string name="delete_forever">Delete forever</string>
+    <string name="what_to_with_this_flashcard">This set is in trash, what would you like to do?</string>
+    <string name="support"><![CDATA[Help & Support]]></string>
 
 </resources>

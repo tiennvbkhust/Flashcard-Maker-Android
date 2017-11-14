@@ -17,13 +17,11 @@ import java.util.List;
 
 public class CardDb extends SQLiteOpenHelper {
 
+    // Database Name
+    public static final String DATABASE_NAME = "cardsManager";
     // All Static variables
     // Database Version
     private static final int DATABASE_VERSION = 1;
-
-    // Database Name
-    private static final String DATABASE_NAME = "cardsManager";
-
     // Contacts table name
     private static final String TABLE_CARDS = "cards";
 
@@ -37,9 +35,18 @@ public class CardDb extends SQLiteOpenHelper {
     private static final String KEY_BACK_IMAGE = "back_image";
     private static final String KEY_FRONT_PATH = "front_path";
     private static final String KEY_BACK_PATH = "back_path";
+    private static CardDb instance;
 
-    public CardDb(Context context) {
+
+    private CardDb(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public static CardDb getInstance(Context context) {
+        if (instance == null) {
+            instance = new CardDb(context);
+        }
+        return instance;
     }
 
     // Creating Tables
@@ -72,6 +79,7 @@ public class CardDb extends SQLiteOpenHelper {
 
     //all CRUDs
     // Adding new card
+
     public void addCard(Card card) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -115,7 +123,40 @@ public class CardDb extends SQLiteOpenHelper {
                     cursor.getString(7),
                     cursor.getString(8));
         // return flashcard
+        cursor.close();
         return flashcard;
+    }
+
+
+    public List<Card> getAllCards() {
+        List<Card> cardList = new ArrayList<>();
+        //select all contacts
+        String selectAll = "SELECT  * FROM " + TABLE_CARDS;
+        //db
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectAll, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Card card = new Card();
+                card.setId(cursor.getString(0));
+                card.setSetId(cursor.getString(1));
+                card.setFront(cursor.getString(2));
+                card.setBack(cursor.getString(3));
+                card.setColor(cursor.getString(4));
+                card.setFrontImage(cursor.getString(5));
+                card.setBackImage(cursor.getString(6));
+                card.setFrontPath(cursor.getString(7));
+                card.setBackPath(cursor.getString(8));
+                // Adding card to list
+                cardList.add(card);
+            } while (cursor.moveToNext());
+        }
+
+        // return contact list
+        cursor.close();
+        return cardList;
     }
 
     public List<Card> getSetCards(String setId) {
@@ -148,47 +189,8 @@ public class CardDb extends SQLiteOpenHelper {
         }
 
         // return contact list
-        return cardList;
-    }
-
-    public List<Card> getAllCards() {
-        List<Card> cardList = new ArrayList<Card>();
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_CARDS;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Card card = new Card();
-                card.setId(cursor.getString(0));
-                card.setSetId(cursor.getString(1));
-                card.setFront(cursor.getString(2));
-                card.setBack(cursor.getString(3));
-                card.setColor(cursor.getString(4));
-                card.setFrontImage(cursor.getString(5));
-                card.setBackImage(cursor.getString(6));
-                card.setFrontPath(cursor.getString(7));
-                card.setBackPath(cursor.getString(8));
-                // Adding card to list
-                cardList.add(card);
-            } while (cursor.moveToNext());
-        }
-
-        // return contact list
-        return cardList;
-    }
-
-    // Getting cards count
-    public int getCardsCount() {
-        String countQuery = "SELECT  * FROM " + TABLE_CARDS;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
         cursor.close();
-        // return count
-        return cursor.getCount();
+        return cardList;
     }
 
     // Updating single card

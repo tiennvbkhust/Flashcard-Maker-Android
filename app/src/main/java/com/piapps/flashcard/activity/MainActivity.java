@@ -13,16 +13,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetView;
 import com.piapps.flashcard.R;
+import com.piapps.flashcard.application.FlashcardsApplication;
+import com.piapps.flashcard.db.CardDb;
+import com.piapps.flashcard.db.FlashcardDb;
+import com.piapps.flashcard.db.LabelsDb;
+import com.piapps.flashcard.db.TrashFlashcardDb;
 import com.piapps.flashcard.fragment.AllSetsFragment;
 import com.piapps.flashcard.fragment.DictionaryFragment;
 import com.piapps.flashcard.fragment.ImportantFragment;
+import com.piapps.flashcard.fragment.LabelFragment;
 import com.piapps.flashcard.fragment.MostUsedFragment;
 import com.piapps.flashcard.fragment.TodoFragment;
+import com.piapps.flashcard.fragment.TrashFragment;
 import com.zookey.universalpreferences.UniversalPreferences;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,14 +40,18 @@ import butterknife.OnClick;
 
 import static android.content.Intent.ACTION_VIEW;
 
+
+// TODO: 9/13/17 Note: Be sure to remove the code that sets these test devices before you release your app.
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static MainActivity instance;
+    public FlashcardDb flashcardDb;
+    public TrashFlashcardDb trashFlashcardDb;
+    public CardDb cardDb;
     @BindView(R.id.fabAddSet)
     FloatingActionButton fab;
     int fragNum = 0;
-
-    int c = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,22 +60,12 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
+        boolean isUserFirstTime = UniversalPreferences.getInstance().get("isUserFirstTime", true);
 
-/*        c = UniversalPreferences.getInstance().get("showAd", 0);
-        interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId(getString(R.string.study_interstitial));
-        if (c % 5 == 0 && c != 0)
-            requestNewInterstitial();
-        interstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                if (c % 5 == 0 && c != 0 && interstitialAd.isLoaded()) {
-                    interstitialAd.show();
-                }
-            }
-        });
-        c++;
-        UniversalPreferences.getInstance().put("showAd", c);*/
+        instance = this;
+        flashcardDb = FlashcardDb.getInstance(getApplicationContext());
+        trashFlashcardDb = TrashFlashcardDb.getInstance(getApplicationContext());
+        cardDb = CardDb.getInstance(getApplicationContext());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -69,15 +73,11 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new AllSetsFragment()).commit();
             getSupportActionBar().setTitle(getString(R.string.menu_all_sets));
         }
 
-        boolean isUserFirstTime = UniversalPreferences.getInstance().get("isUserFirstTime", true);
         if (isUserFirstTime) {
             UniversalPreferences.getInstance().put("isUserFirstTime", false);
             startActivity(new Intent(this, IntroActivity.class));
@@ -113,34 +113,41 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-        //// TODO: 2/19/17: possible crash ->find another way to update the UI
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        List<String> labels = LabelsDb.getInstance(FlashcardsApplication.context).getAllFlashcards();
+        labels.add(getString(R.string.menu_important));
+        labels.add(getString(R.string.menu_todo));
+        labels.add(getString(R.string.menu_dictionary));
+        MenuItem menuItem = navigationView.getMenu().getItem(3);
+        menuItem.getSubMenu().clear();
+        for (int i = 0; i < labels.size(); i++) {
+            menuItem.getSubMenu().add(labels.get(i)).setIcon(R.drawable.ic_label_24dp).setCheckable(true);
+        }
+        navigationView.setNavigationItemSelectedListener(this);
+
         switch (fragNum) {
             case 0:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new AllSetsFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new AllSetsFragment()).commitAllowingStateLoss();
                 getSupportActionBar().setTitle(getString(R.string.menu_all_sets));
                 break;
             case 1:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new MostUsedFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new MostUsedFragment()).commitAllowingStateLoss();
                 getSupportActionBar().setTitle(getString(R.string.menu_most_used));
                 break;
             case 2:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new ImportantFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new ImportantFragment()).commitAllowingStateLoss();
                 getSupportActionBar().setTitle(getString(R.string.menu_important));
                 break;
             case 3:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new TodoFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new TodoFragment()).commitAllowingStateLoss();
                 getSupportActionBar().setTitle(getString(R.string.menu_todo));
                 break;
             case 4:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new DictionaryFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new DictionaryFragment()).commitAllowingStateLoss();
                 getSupportActionBar().setTitle(getString(R.string.menu_dictionary));
                 break;
         }
@@ -177,7 +184,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_rate_us) {
+        if (id == R.id.action_delete_set) {
             String url = "https://play.google.com/store/apps/details?id=com.piapps.flashcard";
             Uri uri = Uri.parse(url);
             Intent i = new Intent(ACTION_VIEW, uri);
@@ -196,33 +203,40 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        if (id == R.id.nav_archive) {
+            fab.setVisibility(View.GONE);
+        } else
+            fab.setVisibility(View.VISIBLE);
+
+        List<String> labels = LabelsDb.getInstance(FlashcardsApplication.context).getAllFlashcards();
+        labels.add(getString(R.string.menu_important));
+        labels.add(getString(R.string.menu_todo));
+        labels.add(getString(R.string.menu_dictionary));
+        for (int i = 0; i < labels.size(); i++) {
+            if (item.getTitle().toString().equals(labels.get(i))) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, LabelFragment.newInstance(item.getTitle().toString())).commit();
+                getSupportActionBar().setTitle(item.getTitle().toString());
+                fragNum = 0;
+            }
+        }
+
         if (id == R.id.nav_all_sets) {
             getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new AllSetsFragment()).commit();
             getSupportActionBar().setTitle(getString(R.string.menu_all_sets));
             fragNum = 0;
-        }
-        if (id == R.id.nav_starred) {
+        } else if (id == R.id.nav_most_used) {
             getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new MostUsedFragment()).commit();
             getSupportActionBar().setTitle(getString(R.string.menu_most_used));
             fragNum = 1;
-        } else if (id == R.id.nav_important) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new ImportantFragment()).commit();
-            getSupportActionBar().setTitle(getString(R.string.menu_important));
-            fragNum = 2;
-        } else if (id == R.id.nav_todo) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new TodoFragment()).commit();
-            getSupportActionBar().setTitle(getString(R.string.menu_todo));
-            fragNum = 3;
-        } else if (id == R.id.nav_dictionary) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new DictionaryFragment()).commit();
-            getSupportActionBar().setTitle(getString(R.string.menu_dictionary));
-            fragNum = 4;
-        } else if (id == R.id.nav_create_new_label) {
-            startActivity(new Intent(this, AddLabelActivity.class));
+        } else if (id == R.id.nav_archive) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_main, new TrashFragment()).commit();
+            getSupportActionBar().setTitle(getString(R.string.menu_trash));
+            fragNum = 5;
+        } else if (id == R.id.nav_sync) {
+            startActivity(new Intent(this, DropboxActivity.class));
         } else if (id == R.id.nav_about) {
             startActivity(new Intent(this, AboutActivity.class));
         } else if (id == R.id.nav_help) {
-            //// TODO: 2/14/17: share the app link
             startActivity(new Intent(this, IntroActivity.class));
         }
 
@@ -230,4 +244,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

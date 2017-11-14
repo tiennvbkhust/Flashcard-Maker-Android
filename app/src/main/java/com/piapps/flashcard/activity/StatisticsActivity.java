@@ -47,7 +47,7 @@ public class StatisticsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(setName + " Statistics");
 
         String setId = getIntent().getStringExtra("SET_ID");
-        StatsDb statsDb = new StatsDb(this);
+        StatsDb statsDb = StatsDb.getInstance(getApplicationContext());
         List<Stats> list = statsDb.getSetCards(setId);
 
         if (list != null)

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ import com.piapps.flashcard.anim.FlipAnimation;
 import com.piapps.flashcard.model.Card;
 import com.piapps.flashcard.util.Utils;
 import com.piapps.flashcard.view.AutoResizeTextView;
+import com.piapps.flashcard.view.RecyclerListView;
 
 import java.util.List;
 
@@ -41,9 +43,15 @@ import static com.piapps.flashcard.activity.FlashcardActivity.TAKE_PHOTO_CODE;
 public class RVCardsAdapter extends RecyclerView.Adapter<RVCardsAdapter.ViewHolder> {
     private static final String ENTER_FRONT_DIALOG = "enter_front_dialog";
     List<Card> list;
+    RecyclerListView rv;
 
     public RVCardsAdapter(List<Card> list) {
         this.list = list;
+    }
+
+    //should be called after setAdapter(this)
+    public void setRV(RecyclerListView rv) {
+        this.rv = rv;
     }
 
     @Override
@@ -67,6 +75,14 @@ public class RVCardsAdapter extends RecyclerView.Adapter<RVCardsAdapter.ViewHold
         list.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, list.size());
+    }
+
+    public void addAt(int position, Card card) {
+        FlashcardActivity.instance.cardDb.addCard(card);
+        list.add(position, card);
+        notifyItemInserted(position);
+        notifyItemRangeChanged(position, list.size());
+        rv.scrollToPosition(position);
     }
 
     public void flipCard(View front, View back, View root) {
@@ -173,7 +189,15 @@ public class RVCardsAdapter extends RecyclerView.Adapter<RVCardsAdapter.ViewHold
         @Override
         public void onClick(View view) {
             if (view.equals(delete)) {
+                final Card removingCard = list.get(getAdapterPosition());
+                final int removingPosition = getAdapterPosition();
                 removeAt(getAdapterPosition());
+                Snackbar.make(view, "Card deleted", Snackbar.LENGTH_LONG).setAction("CANCEL", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        addAt(removingPosition, removingCard);
+                    }
+                }).show();
             }
             if (view.equals(frontText)) {
                 String text = frontText.getText().toString();
@@ -190,7 +214,7 @@ public class RVCardsAdapter extends RecyclerView.Adapter<RVCardsAdapter.ViewHold
                 FlashcardActivity.instance.setEditingBack(false);
             }
             if (view.equals(backText)) {
-                String text = frontText.getText().toString();
+                String text = backText.getText().toString();
                 if (text.equals("Example front side of a flashcard, you can add text, image or drawing")
                         || text.equals("Example back side of a flashcard, you can add text, image or drawing"))
                     text = "";
@@ -274,8 +298,6 @@ public class RVCardsAdapter extends RecyclerView.Adapter<RVCardsAdapter.ViewHold
                     }
                 });
                 popupMenu.show();
-
-
             }
             if (view.equals(editCardBack)) {
 

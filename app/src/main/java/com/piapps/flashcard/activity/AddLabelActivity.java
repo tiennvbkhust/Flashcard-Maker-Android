@@ -58,7 +58,7 @@ public class AddLabelActivity extends AppCompatActivity implements SimpleDialog.
         list.add(new CLabel(getString(R.string.menu_todo), R.drawable.ic_todo_24dp,false));
         list.add(new CLabel(getString(R.string.menu_dictionary), R.drawable.ic_dictionary_24dp,false));
 
-        labelsDb = new LabelsDb(getApplicationContext());
+        labelsDb = LabelsDb.getInstance(getApplicationContext());
 
         for (int i = 0; i < labelsDb.getAllFlashcards().size(); i++) {
             list.add(new CLabel(labelsDb.getAllFlashcards().get(i),R.drawable.ic_other_label_24dp,false));

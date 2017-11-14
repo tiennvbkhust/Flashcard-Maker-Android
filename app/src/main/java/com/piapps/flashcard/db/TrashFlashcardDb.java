@@ -15,17 +15,15 @@ import java.util.List;
  * Created by abduaziz on 2/18/17.
  */
 
-public class FlashcardDb extends SQLiteOpenHelper {
+public class TrashFlashcardDb extends SQLiteOpenHelper {
 
+    // Database Name
+    public static final String DATABASE_NAME = "trashFlashcardsManager";
     // All Static variables
     // Database Version
     private static final int DATABASE_VERSION = 1;
-
-    // Database Name
-    public static final String DATABASE_NAME = "flashcardsManager";
-
     // Contacts table name
-    private static final String TABLE_FLASHCARDS = "flashcards";
+    private static final String TABLE_FLASHCARDS = "trashFlashcards";
 
     // Contacts Table Columns names
     private static final String KEY_ID = "id";
@@ -34,16 +32,15 @@ public class FlashcardDb extends SQLiteOpenHelper {
     private static final String KEY_LABEL = "label";
     private static final String KEY_COLOR = "color";
     private static final String KEY_USE_COUNT = "usecount";
+    private static TrashFlashcardDb instance;
 
-    private FlashcardDb(Context context) {
+    private TrashFlashcardDb(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    private static FlashcardDb instance;
-    public static FlashcardDb getInstance(Context context) {
-        if (instance == null) {
-            instance = new FlashcardDb(context);
-        }
+    public static TrashFlashcardDb getInstance(Context context) {
+        if (instance == null)
+            instance = new TrashFlashcardDb(context);
         return instance;
     }
 
@@ -109,6 +106,7 @@ public class FlashcardDb extends SQLiteOpenHelper {
         if (cursor != null)
             cursor.moveToFirst();
 
+
         Flashcard flashcard = null;
         if (cursor != null)
             flashcard = new Flashcard(
@@ -118,6 +116,7 @@ public class FlashcardDb extends SQLiteOpenHelper {
                     cursor.getString(3),
                     cursor.getString(4),
                     cursor.getString(5));
+
         cursor.close();
         // return flashcard
         return flashcard;
@@ -149,6 +148,16 @@ public class FlashcardDb extends SQLiteOpenHelper {
         cursor.close();
         // return contact list
         return flashcardList;
+    }
+
+    // Getting flashcards count
+    public int getFlashcardsCount() {
+        String countQuery = "SELECT  * FROM " + TABLE_FLASHCARDS;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        cursor.close();
+        // return count
+        return cursor.getCount();
     }
 
     // Updating single flashcard

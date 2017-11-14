@@ -1,5 +1,6 @@
 package com.piapps.flashcard.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
@@ -79,11 +80,11 @@ public class PlayActivity extends AppCompatActivity {
 
         stats = new Stats();
         stats.setSetId(setId);
-        statsDb = new StatsDb(this);
+        statsDb = StatsDb.getInstance(getApplicationContext());
 
         textTitle.setText(title);
 
-        cardDb = new CardDb(this);
+        cardDb = CardDb.getInstance(getApplicationContext());
         cards = cardDb.getSetCards(setId);
 
         fragments = new ArrayList<>();
@@ -96,7 +97,7 @@ public class PlayActivity extends AppCompatActivity {
 
         ansList = new int[fragments.size()];
         for (int i = 0; i < ansList.length; i++) {
-            ansList[i] = 0;
+            ansList[i] = -1;
         }
 
         adapter = new PlayViewPagerAdapter(getSupportFragmentManager(), fragments);
@@ -111,7 +112,6 @@ public class PlayActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 textCount.setText((position + 1) + " / " + cards.size());
-
             }
 
             @Override
@@ -123,22 +123,26 @@ public class PlayActivity extends AppCompatActivity {
 
     @OnClick(R.id.fab_right)
     public void onClickFabKnow() {
-        ansList[playPager.getCurrentItem()] = 1;
+        if (ansList[playPager.getCurrentItem()] == -1)
+            ansList[playPager.getCurrentItem()] = 1;
         if (playPager.getCurrentItem() + 1 < fragments.size())
             playPager.setCurrentItem(playPager.getCurrentItem() + 1);
         else {
+            update();
             //Toast.makeText(this, "Last card", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Last card", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, StatisticsActivity.class);
+            intent.putExtra("SET", title);
+            intent.putExtra("SET_ID", setId);
+            startActivity(intent);
+            finish();
         }
     }
 
     @OnClick(R.id.fab_dont_know)
     public void onClickFabDontKnow() {
         ansList[playPager.getCurrentItem()] = 0;
-        if (playPager.getCurrentItem() + 1 < fragments.size())
-            playPager.setCurrentItem(playPager.getCurrentItem() + 1);
-        else {
-            //Toast.makeText(this, "Last card", Toast.LENGTH_SHORT).show();
-        }
+        fragments.get(playPager.getCurrentItem()).flipCard();
     }
 
     @Override

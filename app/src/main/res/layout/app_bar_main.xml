@@ -23,18 +23,22 @@
 
     <include layout="@layout/content_main" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end">
+        android:layout_gravity="bottom|end"
+        android:orientation="vertical">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabAddSet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_gravity="right"
             android:layout_margin="@dimen/fab_margin"
+            android:layout_alignTop="@+id/ad"
             android:src="@drawable/ic_create_new_set_24dp" />
-    </RelativeLayout>
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

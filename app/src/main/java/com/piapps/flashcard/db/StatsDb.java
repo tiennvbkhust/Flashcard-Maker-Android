@@ -20,13 +20,11 @@ import java.util.List;
 
 public class StatsDb extends SQLiteOpenHelper {
 
+    // Database Name
+    public static final String DATABASE_NAME = "statsManager";
     // All Static variables
     // Database Version
     private static final int DATABASE_VERSION = 1;
-
-    // Database Name
-    private static final String DATABASE_NAME = "statsManager";
-
     // Contacts table name
     private static final String TABLE_STATS = "stats";
 
@@ -35,9 +33,16 @@ public class StatsDb extends SQLiteOpenHelper {
     private static final String KEY_TRUE_ANSWERS = "trueanswers";
     private static final String KEY_TIME_SPENT = "timespent";
     private static final String KEY_DATE = "label";
+    private static StatsDb instance;
 
-    public StatsDb(Context context) {
+    private StatsDb(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public static StatsDb getInstance(Context context) {
+        if (instance == null)
+            instance = new StatsDb(context);
+        return instance;
     }
 
     // Creating Tables
@@ -160,18 +165,9 @@ public class StatsDb extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
         // return contact list
         return cardList;
-    }
-
-    // Getting flashcards count
-    public int getStatsCount() {
-        String countQuery = "SELECT  * FROM " + TABLE_STATS;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
-        // return count
-        return cursor.getCount();
     }
 
     // Deleting single contact

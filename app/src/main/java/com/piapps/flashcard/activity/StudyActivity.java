@@ -78,11 +78,11 @@ public class StudyActivity extends AppCompatActivity {
 
         stats = new Stats();
         stats.setSetId(setId);
-        statsDb = new StatsDb(this);
+        statsDb = StatsDb.getInstance(getApplicationContext());
 
         textTitle.setText(title);
 
-        cardDb = new CardDb(this);
+        cardDb = CardDb.getInstance(getApplicationContext());
         cards = cardDb.getSetCards(setId);
 
         fragments = new ArrayList<>();

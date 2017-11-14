@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.piapps.flashcard.activity.DropboxActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:title="@string/back_up_restore"
+            android:titleTextColor="@color/md_black_1000"
+            app:titleTextColor="@color/md_black_1000" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/parent"
+        android:layout_below="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/backup"
+            android:textColor="@color/md_blue_500"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/backup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="56dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="16dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/lastBackup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
+                    android:textColor="#555"
+                    tools:text="Last backup: Jan 21, 2017"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/lastBackupStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    tools:text="/image.png"
+                    android:textColor="#555"
+                    android:enabled="false"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:src="@drawable/ic_cloud_upload_black_24dp"
+                android:id="@+id/switchShakeOpenApp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="16dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.4dp"
+            android:background="#ddd" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/restore"
+            android:textColor="@color/md_blue_500"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/restore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="56dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="16dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/lastRestored"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
+                    android:textColor="#555"
+                    tools:text="Click to restore"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/lastRestoredStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="/image.png"
+                    android:textSize="12sp"
+                    android:textColor="#555"
+                    android:enabled="false"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:src="@drawable/ic_cloud_download_black_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="16dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.4dp"
+            android:background="#ddd" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.1"
+        android:src="@drawable/dropbox_android" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/auth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="16dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:textColor="@color/md_white_1000"
+        android:background="@color/md_blue_500"
+        android:text="@string/sign_in" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Dropbox and the Dropbox logo are trademarks of Dropbox, Inc."
+        android:textSize="9sp" />
+
+</RelativeLayout>

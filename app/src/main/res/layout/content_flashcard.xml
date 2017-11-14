@@ -49,20 +49,70 @@
             android:paddingRight="32dp"
             android:paddingTop="4dp"></com.piapps.flashcard.view.RecyclerListView>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <com.piapps.flashcard.view.RecyclerListView
                 android:id="@+id/rvFlashcards"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="64dp"
                 android:clipToPadding="false"
                 android:overScrollMode="never"
-                android:padding="48dp"></com.piapps.flashcard.view.RecyclerListView>
+                android:padding="32dp"></com.piapps.flashcard.view.RecyclerListView>
 
-        </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fabPlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="@dimen/fab_margin"
+                    android:src="@drawable/ic_play_flashcards_24dp" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fabStudy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="@dimen/fab_margin"
+                    android:src="@drawable/ic_study_24dp" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fabAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="@dimen/fab_margin"
+                    android:src="@drawable/ic_create_new_set_24dp" />
+
+            </LinearLayout>
+<!--
+            <com.google.android.gms.ads.AdView
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-8604492346299313/3335775597">
+            </com.google.android.gms.ads.AdView>-->
+
+        </LinearLayout>
 
     </LinearLayout>
 

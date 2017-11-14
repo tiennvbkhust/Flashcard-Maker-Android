@@ -22,7 +22,7 @@ public class AboutActivity extends AppCompatActivity {
                 .isRTL(false)
                 .setImage(R.drawable.art)
                 .setDescription(getString(R.string.description))
-                .addItem(new Element().setTitle("Version 1.0.0"))
+                .addItem(new Element().setTitle("Version 3.2.0"))
                 .addGroup("Connect with us")
                 .addEmail("kayumovabduaziz@gmail.com")
                 .addWebsite("http://inha.uz")

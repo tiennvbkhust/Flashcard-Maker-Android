@@ -1,10 +1,12 @@
 package com.piapps.flashcard.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,6 +32,7 @@ import com.piapps.flashcard.adapter.RVCardsAdapter;
 import com.piapps.flashcard.adapter.RVSetLabelsAdapter;
 import com.piapps.flashcard.db.CardDb;
 import com.piapps.flashcard.db.FlashcardDb;
+import com.piapps.flashcard.db.TrashFlashcardDb;
 import com.piapps.flashcard.model.Card;
 import com.piapps.flashcard.model.Flashcard;
 import com.piapps.flashcard.model.Label;
@@ -62,6 +65,7 @@ public class FlashcardActivity extends AppCompatActivity implements SimpleDialog
     final static String COLOR_DIALOG = "color_dialog_tag";
     public static FlashcardActivity instance;
     public FlashcardDb flashcardDb;
+    public TrashFlashcardDb trashFlashcardDb;
     public CardDb cardDb;
     String TAG = "FLASH";
     Toolbar toolbar;
@@ -93,6 +97,8 @@ public class FlashcardActivity extends AppCompatActivity implements SimpleDialog
     LinearLayout noSets;
     boolean isNewlyCreated = false;
 
+    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,7 +112,11 @@ public class FlashcardActivity extends AppCompatActivity implements SimpleDialog
 
         setId = getIntent().getStringExtra("SET_ID");
 
-        flashcardDb = new FlashcardDb(getApplicationContext());
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please, wait...");
+
+        flashcardDb = FlashcardDb.getInstance(getApplicationContext());
+        trashFlashcardDb = TrashFlashcardDb.getInstance(getApplicationContext());
         //get current flashcard from db
         if (setId != null)
             flashcard = flashcardDb.getFlashcard(setId);
@@ -119,7 +129,7 @@ public class FlashcardActivity extends AppCompatActivity implements SimpleDialog
         String flashcardsTitle = flashcard.getTitle();
         editTextView.setText(flashcardsTitle);
 
-        cardDb = new CardDb(getApplicationContext());
+        cardDb = CardDb.getInstance(getApplicationContext());
         if (setId != null)
             list = cardDb.getSetCards(setId);
         else
@@ -133,6 +143,7 @@ public class FlashcardActivity extends AppCompatActivity implements SimpleDialog
 
         adapter = new RVCardsAdapter(list);
         rv.setAdapter(adapter);
+        adapter.setRV(rv);
 
         labelList = new ArrayList<>();
         if (!flashcard.getLabel().equals("")) {
@@ -206,6 +217,7 @@ public class FlashcardActivity extends AppCompatActivity implements SimpleDialog
 
     @OnClick(R.id.fabPlay)
     public void onClickFab() {
+
         if (!list.isEmpty()) {
             //increment useCount
             flashcard.setUseCount((Integer.parseInt(flashcard.getUseCount()) + 1) + "");
@@ -254,6 +266,7 @@ public class FlashcardActivity extends AppCompatActivity implements SimpleDialog
         adapter.notifyItemRangeChanged(lm.findFirstVisibleItemPosition(), lm.findLastVisibleItemPosition());
         rv.scrollToPosition(pos);
         noSets.setVisibility(GONE);
+        updateSet();
     }
 
     @Override
@@ -271,34 +284,39 @@ public class FlashcardActivity extends AppCompatActivity implements SimpleDialog
 
     public void updateSet() {
         //update set title
-        flashcard.setTitle(editTextView.getText() + "");
-        if (flashcard.getTitle().isEmpty())
-            flashcard.setTitle(getString(R.string.untitled_set));
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                flashcard.setTitle(editTextView.getText() + "");
+                if (flashcard.getTitle().isEmpty())
+                    flashcard.setTitle(getString(R.string.untitled_set));
 
-        //update set count
-        flashcard.setCount(list.size() + "");
+                //update set count
+                flashcard.setCount(list.size() + "");
 
-        //update labels
-        String lbls = "";
-        for (int i = 0; i < labelList.size(); i++) {
-            lbls += labelList.get(i).getTitle() + "___";
-        }
-        flashcard.setLabel(lbls);
+                //update labels
+                String lbls = "";
+                for (int i = 0; i < labelList.size(); i++) {
+                    lbls += labelList.get(i).getTitle() + "___";
+                }
+                flashcard.setLabel(lbls);
 
-        //if it exists, update it
-        if (setId != null)
-            flashcardDb.updateFlashcard(flashcard);
-        else //else create a new set
-            flashcardDb.addFlashcard(flashcard);
+                //if it exists, update it
+                if (setId != null)
+                    flashcardDb.updateFlashcard(flashcard);
+                else //else create a new set
+                    flashcardDb.addFlashcard(flashcard);
 
-        //update its cards as well
-        for (int i = 0; i < list.size(); i++) {
-            if (cardDb.getCard(list.get(i).getId()) != null)
-                cardDb.updateCard(list.get(i));
-            else
-                cardDb.addCard(list.get(i));
-            noSets.setVisibility(GONE);
-        }
+                //update its cards as well
+                for (int i = 0; i < list.size(); i++) {
+                    if (cardDb.getCard(list.get(i).getId()) != null)
+                        cardDb.updateCard(list.get(i));
+                    else
+                        cardDb.addCard(list.get(i));
+                    noSets.setVisibility(GONE);
+                }
+            }
+        });
     }
 
     @Override
@@ -318,16 +336,41 @@ public class FlashcardActivity extends AppCompatActivity implements SimpleDialog
             finish();
             return true;
         }
-        if (id == R.id.action_rate_us) {
+        if (id == R.id.action_reverse) {
+
+            progressDialog.show();
+            for (int i = 0; i < list.size(); i++) {
+                Card card = list.get(i);
+                String front = card.getFront();
+                String back = card.getBack();
+                String frontImage = card.getFrontImage();
+                String backImage = card.getBackImage();
+                String frontPath = card.getFrontPath();
+                String backPath = card.getBackPath();
+                card.setFront(back);
+                card.setBack(front);
+                card.setFrontImage(backImage);
+                card.setBackImage(frontImage);
+                card.setFrontPath(backPath);
+                card.setBackPath(frontPath);
+                adapter.notifyItemChanged(i);
+            }
+            progressDialog.dismiss();
+            updateSet();
+
+            return true;
+        }
+        if (id == R.id.action_delete_set) {
             //// TODO: 2/18/17 do you really want to delete this set?
             //delete this set
             flashcardDb.deleteFlashcard(flashcard);
+            trashFlashcardDb.addFlashcard(flashcard);
             //delete its cards as well
-            for (int i = 0; i < list.size(); i++) {
+/*            for (int i = 0; i < list.size(); i++) {
                 cardDb.deleteCard(list.get(i));
-            }
+            }*/
             //notify user
-            Toast.makeText(instance, getString(R.string.set_deleted), Toast.LENGTH_SHORT).show();
+            Toast.makeText(instance, getString(R.string.set_archived), Toast.LENGTH_SHORT).show();
             finish();
             return true;
         }

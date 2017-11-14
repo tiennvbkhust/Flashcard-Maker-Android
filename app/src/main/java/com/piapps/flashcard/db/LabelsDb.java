@@ -15,20 +15,25 @@ import java.util.List;
 
 public class LabelsDb extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
-
     // Database Name
-    private static final String DATABASE_NAME = "labelsManager";
-
+    public static final String DATABASE_NAME = "labelsManager";
+    private static final int DATABASE_VERSION = 1;
     // Contacts table name
     private static final String TABLE_LABELS = "labels";
 
     // Contacts Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_TITLE = "name";
+    private static LabelsDb instance;
 
-    public LabelsDb(Context context) {
+    private LabelsDb(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public static LabelsDb getInstance(Context context) {
+        if (instance == null)
+            instance = new LabelsDb(context);
+        return instance;
     }
 
     // Creating Tables
@@ -57,7 +62,7 @@ public class LabelsDb extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_TITLE,label);
+        values.put(KEY_TITLE, label);
 
         // Inserting Row
         db.insert(TABLE_LABELS, null, values);
@@ -78,6 +83,7 @@ public class LabelsDb extends SQLiteOpenHelper {
                 flashcardList.add(cursor.getString(1));
             } while (cursor.moveToNext());
         }
+        cursor.close();
         // return contact list
         return flashcardList;
     }
